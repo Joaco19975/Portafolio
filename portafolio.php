@@ -17,11 +17,9 @@ $imagenTemporal = $_FILES['archivo']['tmp_name'];
 move_uploaded_file($imagenTemporal,"imagenes/".$imagen);
 
 
-$objConexion = new conexion(); //class conexion 
-
 $sql = "INSERT INTO `proyectos` (`ID`, `nombre`, `imagen`, `descripcion`) VALUES (NULL, '$nombre', '$imagen', '$descripcion');";
 
-$objConexion->ejecutar($sql);
+mysqli_query($conexion,$sql);
 //para que cuando refresque la pagina no vuelva a insertar el ultimo proyecto, redirecciono a la misma pagina
 header("location:portafolio.php");
 }
@@ -29,23 +27,23 @@ header("location:portafolio.php");
 if($_GET){
 
 $id = $_GET['borrar'];
-$objConexion = new conexion();
+//$objConexion = new conexion();
 // acá solo nos pasa el ID $_GET['borrar'], para hacer un borrado completo y borrar la imagen, tenemos que hacer una busqueda mediante una consulta
 //BORRADO DEL ARCHIVO
-$imagenBorrar = $objConexion->consultar("SELECT imagen FROM `proyectos` WHERE ID=".$id) ;
+$imagenBorrar = mysqli_query($conexion,"SELECT imagen FROM `proyectos` WHERE ID=".$id) ;
 unlink("imagenes/".$imagen[0]['imagen']);
 //BORRADO DEL ARCHIVO
 
 
 $sql = "DELETE FROM `proyectos` WHERE `proyectos`.`ID` = ".$id ;
-$objConexion->ejecutar($sql);
+mysqli_query($conexion,$sql);
 //para que cuando refresque la pagina no vuelva a insertar el ultimo proyecto, redirecciono a la misma pagina
 header("location:portafolio.php");
 
 }
 
-$objConexion = new conexion ();
-$proyectos = $objConexion->consultar("SELECT * FROM `proyectos` ") ;
+//$objConexion = new conexion ();
+$proyectos = mysqli_query($conexion,"SELECT * FROM `proyectos` ") ;
 //print_r($proyectos);
 ?>
 
