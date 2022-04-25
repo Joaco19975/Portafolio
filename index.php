@@ -1,9 +1,9 @@
-<?php include("cabecera.php") ; ?>
-<?php include("conexion.php") ; ?>
-<?php
+<?php 
+include("cabecera.php") ; 
+include("conexion.php") ; 
 
-$objConexion = new conexion ();
-$proyectos = $objConexion->consultar("SELECT * FROM `proyectos` ") ;
+$consulta = mysqli_query($conexion,"SELECT * FROM `proyectos` ") ;
+
 ?>
 
 <div class="p-5 bg-light">
@@ -20,17 +20,22 @@ $proyectos = $objConexion->consultar("SELECT * FROM `proyectos` ") ;
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
 
-<?php foreach($proyectos as $proyecto){?>
+<?php while($proyectos=mysqli_fetch_array($consulta)){?>
   <div class="col">
     <div class="card">
-      <img src="imagenes/<?php echo $proyecto['imagen']; ?>" class="card-img-top" alt="...">
+      <img src="imagenes/<?php echo $proyectos['imagen']; ?>" class="card-img-top" alt="...">
       <div class="card-body">
-        <h5 class="card-title"><?php echo $proyecto['nombre'];?></h5>
-        <p class="card-text"> <?php echo $proyecto['descripcion']?></p>
+        <h5 class="card-title"><?php echo $proyectos['nombre'];?></h5>
+        <p class="card-text"> <?php echo $proyectos['descripcion']?></p>
       </div>
     </div>
   </div>
-<?php } ?>  
+<?php }
+
+mysqli_free_result($consulta);
+mysqli_close($conexion);
+
+?>  
 
 </div>
 
